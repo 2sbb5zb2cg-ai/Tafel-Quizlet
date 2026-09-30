@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tafel-Quiz Krefeld</title>
+<meta name="description" content="Hätten Sie’s gewusst? Zehn kurze Fragen zur Tafel Krefeld und zur Kindertafel.">
+<meta property="og:title" content="Hätten Sie’s gewusst? Das Tafel-Quiz Krefeld">
+<meta property="og:description" content="Zehn kurze Fragen zur Tafel Krefeld und zur Kindertafel. Dauert zwei Minuten.">
+<meta property="og:image" content="logo-tafel.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+@font-face{font-family:"Bricolage Grotesque";font-weight:600;font-display:swap;src:url(font-bricolage-grotesque-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Bricolage Grotesque";font-weight:800;font-display:swap;src:url(font-bricolage-grotesque-latin-800-normal.woff2) format("woff2")}
+@font-face{font-family:"Atkinson Hyperlegible";font-weight:400;font-display:swap;src:url(font-atkinson-hyperlegible-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Atkinson Hyperlegible";font-weight:700;font-display:swap;src:url(font-atkinson-hyperlegible-latin-700-normal.woff2) format("woff2")}
+html,body{margin:0}
+
+:root{
+  --ground:#F7F5F0;
+  --surface:#FFFFFF;
+  --plate:#FFFFFF;
+  --ink:#2F2A22;
+  --ink-soft:#6B6253;
+  --line:#E4DED2;
+  --accent:#F28635;
+  --accent-ink:#FFFFFF;
+  --accent-soft:#FDE9D9;
+  --btn:#C2560F;
+  --btn-ink:#FFFFFF;
+  --petrol:#6F634D;
+  --ok:#3F7A34;
+  --ok-soft:#E6F0E1;
+  --miss:#B24A12;
+  --miss-soft:#FBE7DA;
+  --shadow:0 1px 2px rgba(47,42,34,.06),0 8px 24px rgba(47,42,34,.07);
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#1C1915;--surface:#26221C;--plate:#FFFFFF;--ink:#F1ECE3;--ink-soft:#BDB29F;--line:#3B352C;
+    --accent:#F59A55;--accent-ink:#1C1206;--accent-soft:#3D2A1A;--btn:#F28635;--btn-ink:#1C1206;--petrol:#D2C5A8;
+    --ok:#9BCB86;--ok-soft:#24331D;--miss:#F4A274;--miss-soft:#3D2519;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+    --ground:#1C1915;--surface:#26221C;--plate:#FFFFFF;--ink:#F1ECE3;--ink-soft:#BDB29F;--line:#3B352C;
+    --accent:#F59A55;--accent-ink:#1C1206;--accent-soft:#3D2A1A;--btn:#F28635;--btn-ink:#1C1206;--petrol:#D2C5A8;
+    --ok:#9BCB86;--ok-soft:#24331D;--miss:#F4A274;--miss-soft:#3D2519;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;padding-inline:16px;padding-block:24px 40px}
+.wrap{max-width:620px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+header.brand{background:var(--plate);border:1px solid var(--line);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px 20px;flex-wrap:wrap}
+header.brand a{display:block;max-width:100%}
+header.brand img{display:block;height:auto;max-width:100%}
+header.brand .tk{width:150px}
+header.brand .kt{width:128px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:28px 24px;display:flex;flex-direction:column;gap:18px}
+h1,h2{font-family:var(--display);font-weight:800;letter-spacing:-.02em;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,7vw,42px)}
+h2{font-size:clamp(22px,5vw,27px)}
+p{margin:0}
+.lead{font-size:18px;color:var(--ink-soft);max-width:60ch}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.fact{border-top:3px solid var(--accent);padding-top:8px}
+.fact b{display:block;font-family:var(--display);font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--petrol)}
+.fact span{font-size:14px;color:var(--ink-soft)}
+.btn{appearance:none;border:0;border-radius:10px;background:var(--btn);color:var(--btn-ink);font:700 18px/1 var(--body);padding:16px 22px;cursor:pointer;min-height:52px;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn:hover{filter:brightness(1.05)}
+.btn.ghost{background:transparent;color:var(--petrol);border:1.5px solid var(--line)}
+.btn:focus-visible,.opt:focus-visible,.copy:focus-visible,a:focus-visible{outline:3px solid var(--petrol);outline-offset:3px}
+.meta{font-size:14px;color:var(--ink-soft)}
+
+/* Kistenfächer als Fortschritt */
+.crate{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
+.slot{height:12px;border-radius:3px;background:var(--line)}
+.slot.done{background:var(--accent)}
+.slot.now{background:var(--accent-soft);box-shadow:inset 0 0 0 2px var(--accent)}
+.qhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:14px;color:var(--ink-soft)}
+.qhead .topic{letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--petrol)}
+
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{appearance:none;text-align:left;width:100%;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:15px 16px;font:400 17px/1.35 var(--body);cursor:pointer;display:flex;gap:12px;align-items:center;min-height:56px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .key{flex:none;width:28px;height:28px;border-radius:6px;background:var(--ground);display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--ink-soft)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .key{background:var(--ok);color:var(--surface)}
+.opt.wrong{border-color:var(--miss);background:var(--miss-soft)}
+.opt.wrong .key{background:var(--miss);color:var(--surface)}
+.opt.dim{opacity:.55}
+
+.explain{border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px;background:var(--ground);border-left:4px solid var(--ok)}
+.explain.miss{border-left-color:var(--miss)}
+.explain .verdict{font-weight:700}
+.explain.ok .verdict{color:var(--ok)}
+.explain.miss .verdict{color:var(--miss)}
+.row{display:flex;justify-content:flex-end}
+
+.score{display:flex;align-items:baseline;gap:10px}
+.score b{font-family:var(--display);font-size:56px;font-weight:800;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.score span{font-size:18px;color:var(--ink-soft)}
+.ways{display:grid;grid-template-columns:1fr;gap:12px}
+.way{border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;background:var(--surface)}
+.way h3{margin:0;font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.01em}
+.way p{color:var(--ink-soft);font-size:16px}
+.way .actions{display:flex;flex-wrap:wrap;gap:8px}
+.way .btn{font-size:16px;padding:12px 16px;min-height:46px}
+.line{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:15px}
+.line code{font-family:var(--body);font-weight:700;color:var(--ink);background:var(--ground);border-radius:6px;padding:5px 8px;user-select:all;word-break:break-all}
+.copy{appearance:none;border:1px solid var(--line);background:transparent;color:var(--petrol);border-radius:6px;font:700 13px/1 var(--body);padding:7px 10px;cursor:pointer}
+footer{font-size:13px;color:var(--ink-soft);display:flex;flex-direction:column;gap:6px}
+footer a{color:var(--petrol)}
+@media (min-width:560px){.card{padding:34px 34px}.ways{grid-template-columns:1fr 1fr}.way.wide{grid-column:1/-1}}
+@media (max-width:380px){.facts{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:no-preference){
+  .card{animation:rise .28s ease-out both}
+  @keyframes rise{from{transform:translateY(6px)}to{transform:none}}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="brand">
+    <a href="https://tafel-krefeld.de" target="_blank" rel="noopener"><img class="tk" src="logo-tafel.webp" width="640" height="313" alt="Tafel Krefeld"></a>
+    <a href="https://krefelder-kindertafel.de" target="_blank" rel="noopener"><img class="kt" src="logo-kindertafel.webp" width="560" height="257" alt="Kindertafel Krefeld, eine Initiative der Tafel Krefeld e.V."></a>
+  </header>
+
+  <main id="app" aria-live="polite"></main>
+
+  <footer>
+    <span>Quellen: <a href="https://tafel-krefeld.de" target="_blank" rel="noopener">tafel-krefeld.de</a>, <a href="https://krefelder-kindertafel.de" target="_blank" rel="noopener">krefelder-kindertafel.de</a>, <a href="https://www.tafel.de" target="_blank" rel="noopener">tafel.de</a> und Angaben der Tafel Krefeld e.V. Stand: September 2026.</span>
+    <span>Tafel Krefeld e.V., Westwall 37–39, 47798 Krefeld · <a href="https://tafel-krefeld.de/impressum/" target="_blank" rel="noopener">Impressum</a> · <a href="https://tafel-krefeld.de/datenschutzerklaerung/" target="_blank" rel="noopener">Datenschutz</a></span>
+  </footer>
+</div>
+
+<script>
+const SHARE_URL = location.origin + location.pathname.replace(/index\.html$/,"");
+const DONATE_URL = "https://tafel-krefeld.de/wie-sie-helfen-jetzt-spenden/";
+
+const Q = [
+  {topic:"Tafel Krefeld", q:"Seit wann rettet die Tafel Krefeld Lebensmittel für Menschen in unserer Stadt?",
+   o:["Seit 10 Jahren","Seit 20 Jahren","Seit 30 Jahren"], a:2,
+   e:"Seit 30 Jahren. Angefangen hat alles mit einem einzigen Lieferwagen in der Herbertzstraße. Heute ist die Tafel aus Krefeld nicht mehr wegzudenken."},
+  {topic:"Tafel Krefeld", q:"Wie viele Lebensmittel rettet die Tafel Krefeld im Jahr vor der Tonne?",
+   o:["Rund 80 Tonnen","Rund 300 Tonnen","Rund 800 Tonnen"], a:2,
+   e:"Rund 800 Tonnen. Das sind im Schnitt über 2 Tonnen an jedem einzelnen Tag, die sonst entsorgt würden und stattdessen auf den Tisch kommen."},
+  {topic:"Tafel Krefeld", q:"An wie vielen Ausgabestellen in Krefeld erhalten Menschen Lebensmittel?",
+   o:["An 6 Ausgabestellen","An 2 Ausgabestellen","An 15 Ausgabestellen"], a:0,
+   e:"An 6 Ausgabestellen: am Westwall, in der Gartenstadt, in Süd, in Stahldorf, in Oppum und beim „Täglichen Brot“ an der St.-Josef-Kirche."},
+  {topic:"Tafel Krefeld", q:"Wie viele Ehrenamtliche packen bei der Tafel Krefeld mit an?",
+   o:["20 bis 30","160 bis 180","Über 1.000"], a:1,
+   e:"Zwischen 160 und 180 Menschen schenken der Tafel ihre Zeit. Sie holen Ware ab, sortieren, geben aus und organisieren. Jede zusätzliche Hand entlastet das Team spürbar."},
+  {topic:"Kinder in Krefeld", q:"Wie viele Kinder in Krefeld sind von Armut betroffen?",
+   o:["Jedes vierte Kind","Jedes zehnte Kind","Jedes zwanzigste Kind"], a:0,
+   e:"Jedes vierte Kind in Krefeld lebt in Armut oder ist auf Sozialleistungen angewiesen. Die Folgen sind oft Hunger, schlechtere Gesundheit und geringere Bildungschancen."},
+  {topic:"Kinder in Krefeld", q:"Welcher Anteil der Menschen, die zur Tafel Krefeld kommen, sind Kinder und Jugendliche?",
+   o:["Etwa ein Zehntel","Etwa ein Fünftel","Etwa ein Drittel"], a:2,
+   e:"Etwa ein Drittel. Deshalb gibt es seit 2007 die Kindertafel Krefeld als Initiative der Tafel, damit kein Kind hungrig in den Tag gehen muss."},
+  {topic:"Kindertafel", q:"Was erwartet Kinder in „Mobisatt“, der Tagesstätte der Kindertafel?",
+   o:["Ein warmes Mittagessen zum Mitnehmen","Essen, Hausaufgaben machen, spielen und vieles mehr","Ein Schlafplatz für die Nacht"], a:1,
+   e:"In Mobisatt bekommen Kinder ein warmes Essen, Hilfe bei den Hausaufgaben und Zeit zum Spielen. Die Kindertafel ermöglicht außerdem Schwimmkurse bis zum Seepferdchen und Sportgutscheine bis 200 € pro Kind."},
+  {topic:"Tafeln bundesweit", q:"Wie viele Tafeln gibt es in ganz Deutschland?",
+   o:["Über 950","Rund 100","Über 5.000"], a:0,
+   e:"Über 950 Tafeln mit rund 77.000 Helferinnen und Helfern. Gemeinsam retten sie jedes Jahr etwa 265.000 Tonnen Lebensmittel und unterstützen rund 1,5 Millionen Menschen."},
+  {topic:"Selbst helfen", q:"Sie möchten Lebensmittel spenden. Was nimmt die Tafel Krefeld von Privatpersonen an?",
+   o:["Selbst gekochte Gerichte","Abgepackte, haltbare Lebensmittel, die nicht gekühlt werden müssen","Angebrochene Packungen aus dem Vorrat"], a:1,
+   e:"Einwandfreie, abgepackte Lebensmittel ohne Kühlpflicht, zum Beispiel Nudeln, Reis oder Konserven. Abgabe in der Schönwasserstraße 184, Mo–Do 8–16 Uhr, Fr 8–15 Uhr."},
+  {topic:"Selbst helfen", q:"Was brauchen Sie, um bei der Tafel Krefeld ehrenamtlich mitzuhelfen?",
+   o:["Eine Ausbildung im Lebensmittelhandel","Mindestens 20 Stunden pro Woche","Etwas Zeit, regelmäßig oder für einen begrenzten Zeitraum"], a:2,
+   e:"Etwas Zeit genügt. Ob Anpacken, Organisieren oder Autofahren: Die Tafel findet mit Ihnen den passenden Einsatz, regelmäßig oder zeitlich begrenzt."}
+];
+
+const OK  = ["Richtig!","Genau so ist es.","Stimmt!","Sehr gut.","Richtig erkannt."];
+const MISS= ["Hätten Sie’s gewusst?","Fast.","Überraschend, oder?","Gut zu wissen.","Nicht ganz."];
+
+const app = document.getElementById("app");
+let i = 0, score = 0;
+
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function start(){
+  i = 0; score = 0;
+  app.innerHTML = `
+  <section class="card">
+    <h1>Hätten Sie’s gewusst?</h1>
+    <p class="lead">Zehn kurze Fragen zur Tafel Krefeld und zur Kindertafel. Dauert etwa zwei Minuten. Am Ende zeigen wir Ihnen, wie Sie ganz einfach helfen können.</p>
+    <div class="facts" aria-label="Drei Zahlen vorab">
+      <div class="fact"><b>30</b><span>Jahre in Krefeld</span></div>
+      <div class="fact"><b>6</b><span>Ausgabestellen</span></div>
+      <div class="fact"><b>10</b><span>Fragen im Quiz</span></div>
+    </div>
+    <div><button class="btn" id="go">Quiz starten</button></div>
+    <p class="meta">Keine Anmeldung, keine Daten, keine Cookies.</p>
+  </section>`;
+  document.getElementById("go").onclick = () => { ask(); };
+}
+
+function crate(){
+  return `<div class="crate" aria-hidden="true">${Q.map((_,k)=>`<span class="slot ${k<i?'done':k===i?'now':''}"></span>`).join("")}</div>`;
+}
+
+function ask(){
+  const it = Q[i];
+  app.innerHTML = `
+  <section class="card">
+    ${crate()}
+    <div class="qhead"><span class="topic">${esc(it.topic)}</span><span>Frage ${i+1} von ${Q.length}</span></div>
+    <h2 id="qt">${esc(it.q)}</h2>
+    <div class="opts" role="group" aria-labelledby="qt">
+      ${it.o.map((t,k)=>`<button class="opt" data-k="${k}"><span class="key">${"ABC"[k]}</span><span>${esc(t)}</span></button>`).join("")}
+    </div>
+    <div id="fb"></div>
+  </section>`;
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>answer(+b.dataset.k));
+  app.querySelector(".opt").focus({preventScroll:true});
+}
+
+function answer(k){
+  const it = Q[i], hit = k===it.a;
+  if(hit) score++;
+  app.querySelectorAll(".opt").forEach(b=>{
+    const n=+b.dataset.k; b.disabled=true;
+    if(n===it.a) b.classList.add("right");
+    else if(n===k) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+  const last = i===Q.length-1;
+  const v = hit ? OK[i%OK.length] : MISS[i%MISS.length];
+  document.getElementById("fb").innerHTML = `
+    <div class="explain ${hit?'ok':'miss'}"><span class="verdict">${v}</span><p>${esc(it.e)}</p></div>
+    <div class="row" style="margin-top:14px"><button class="btn" id="next">${last?'Zum Ergebnis':'Nächste Frage'}</button></div>`;
+  const nx=document.getElementById("next");
+  nx.onclick=()=>{ i++; last?result():ask(); };
+  nx.focus({preventScroll:true});
+  nx.scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+
+function result(){
+  const msg = score>=8
+    ? "Sie kennen die Tafel richtig gut. Vielleicht ist jetzt der Moment, Teil davon zu werden?"
+    : score>=5
+    ? "Schon viel gewusst und bestimmt etwas dazugelernt. Genau darum geht es."
+    : "Vieles davon wissen die wenigsten. Jetzt gehören Sie zu denen, die es wissen.";
+  app.innerHTML = `
+  <section class="card">
+    ${crate()}
+    <div class="score"><b>${score}</b><span>von ${Q.length} richtig</span></div>
+    <h2>Danke, dass Sie sich die Zeit genommen haben.</h2>
+    <p class="lead">${msg} Jeden Tag kommen in Krefeld Lebensmittel auf den Tisch, die sonst im Müll landen würden. Das gelingt nur, weil Menschen wie Sie mithelfen.</p>
+  </section>
+
+  <section class="ways" aria-label="So können Sie helfen">
+    <div class="way">
+      <h3>Mit Geld helfen</h3>
+      <p>Die Tafel finanziert sich überwiegend aus Spenden. Schon kleine Beträge helfen, Fahrzeuge, Kühlung und Miete zu tragen.</p>
+      <div class="actions">
+        <a class="btn" href="${DONATE_URL}" target="_blank" rel="noopener">Jetzt spenden</a>
+        <a class="btn ghost" href="https://paypal.me/TafelKrefeld" target="_blank" rel="noopener">PayPal</a>
+      </div>
+    </div>
+    <div class="way">
+      <h3>Zeit schenken</h3>
+      <p>Anpacken, organisieren, Auto fahren. Regelmäßig oder für eine begrenzte Zeit, ganz wie es für Sie passt.</p>
+      <div class="line"><code id="mail">ehrenamt@tafel-krefeld.de</code><button class="copy" data-copy="mail">Kopieren</button></div>
+      <div class="line"><code id="tel">02151 538898</code><button class="copy" data-copy="tel">Kopieren</button></div>
+    </div>
+    <div class="way">
+      <h3>Für die Kindertafel spenden</h3>
+      <p>Für Mobisatt, Schwimmkurse und Sportgutscheine für Krefelder Kinder.</p>
+      <div class="line"><span>Sparkasse Krefeld</span></div>
+      <div class="line"><code id="iban">DE86 3205 0000 0000 9531 74</code><button class="copy" data-copy="iban">Kopieren</button></div>
+    </div>
+    <div class="way">
+      <h3>Lebensmittel bringen</h3>
+      <p>Abgepackt, haltbar, ohne Kühlpflicht. Unternehmen sind für eine regelmäßige Zusammenarbeit herzlich willkommen.</p>
+      <div class="line"><span>Schönwasserstraße 184 · Mo–Do 8–16 Uhr, Fr 8–15 Uhr</span></div>
+    </div>
+    <div class="way wide">
+      <h3>Quiz weitergeben</h3>
+      <p>Kennen Sie jemanden, der das auch wissen sollte? Teilen Sie den Link, oder folgen Sie der Tafel auf Instagram.</p>
+      <div class="line"><code id="share">${SHARE_URL}</code><button class="copy" data-copy="share">Link kopieren</button></div>
+      <div class="actions">
+        <a class="btn ghost" href="https://www.instagram.com/tafel.krefeld/" target="_blank" rel="noopener">@tafel.krefeld</a>
+        <button class="btn ghost" id="again">Noch einmal spielen</button>
+      </div>
+    </div>
+  </section>`;
+  app.querySelectorAll(".copy").forEach(b=>b.onclick=()=>copy(b));
+  document.getElementById("again").onclick=()=>{start();window.scrollTo({top:0});};
+  window.scrollTo({top:0});
+}
+
+function copy(btn){
+  const el=document.getElementById(btn.dataset.copy), txt=el.textContent.trim();
+  const done=()=>{const o=btn.textContent;btn.textContent="Kopiert";setTimeout(()=>btn.textContent=o,1600);};
+  const select=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent="Markiert";setTimeout(()=>btn.textContent="Kopieren",1600);};
+  try{ navigator.clipboard.writeText(txt).then(done,select); }catch(e){ select(); }
+}
+
+start();
+</script>
+
+</body>
+</html>
